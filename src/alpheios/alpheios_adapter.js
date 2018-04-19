@@ -1,5 +1,6 @@
 import BaseLemmaTranslationsAdapter from '../base_adapter.js'
 import DefaultConfig from './config.json'
+import Promise from 'promise-polyfill'
 
 class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
   /**
