@@ -1,6 +1,6 @@
 {
   "name": "alpheios-lemma-client",
-  "version": "1.15.4",
+  "version": "1.15.5",
   "description": "Alpheios Lemma Client Library",
   "main": "dist/alpheios-lemma-client.standalone.js",
   "moduleExternal": "dist/alpheios-lemma-client.module-external.js",
