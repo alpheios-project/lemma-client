@@ -77,6 +77,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
       }).then(
         function (response) {
           let text = response.json()
+          console.log('loadJson lemma-client response', response)
           resolve(text)
         }
       ).catch((error) => {
