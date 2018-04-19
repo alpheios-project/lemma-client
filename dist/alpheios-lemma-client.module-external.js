@@ -348,10 +348,10 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
 
 // import {LanguageModelFactory} from 'alpheios-data-models'
 class LemmaTranslations {
-  static async fetchTranslations (languageID) {
+  static async fetchTranslations (inLang, outLang, text) {
     // let languageCode = LanguageModelFactory.getLanguageCodeFromId(languageID)
     let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
-    let translationsList = await lemmaAdapter.getTranslations('lat', 'eng', 'mare');
+    let translationsList = await lemmaAdapter.getTranslations(inLang, outLang, text);
 
     console.log('fetching translations', translationsList);
   }
