@@ -1,6 +1,7 @@
 import BaseLemmaTranslationsAdapter from '../base_adapter.js'
 import DefaultConfig from './config.json'
 import Promise from 'promise-polyfill'
+import 'whatwg-fetch'
 
 class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
   /**
@@ -58,7 +59,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
       let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input
 
       let unparsed = await adapter._loadJSON(urlTranslations)
-      console.log('get translations 5', unparsed)
+      console.log('get translations 6', unparsed)
       return unparsed[0].translations
     }
   }
