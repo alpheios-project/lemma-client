@@ -1,4 +1,4 @@
-import {LanguageModelFactory} from 'alpheios-data-models'
+// import {LanguageModelFactory} from 'alpheios-data-models'
 import AlpheiosLemmaTranslationsAdapter from './alpheios/alpheios_adapter'
 
 export default class LemmaTranslations {

@@ -71,7 +71,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
       let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input;
 
       let unparsed = await adapter._loadJSON(urlTranslations);
-
+      console.log('get translations 3', unparsed);
       return unparsed[0].translations
     }
   }
