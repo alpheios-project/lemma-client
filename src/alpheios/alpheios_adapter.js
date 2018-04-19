@@ -68,6 +68,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
    */
   _loadJSON (url) {
     // TODO figure out best way to load this data
+    console.time('loadJSONTime')
     return new Promise((resolve, reject) => {
       window.fetch(url, {
         method: 'GET',
@@ -82,6 +83,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
           function (json) {
           // let text = response.json()
             console.log('loadJson lemma-client response', json)
+            console.timeEnd('loadJSONTime')
             resolve(json)
           }
         ).catch((error) => {
