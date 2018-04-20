@@ -12,23 +12,22 @@ export default class LemmaTranslations {
    * a Definition object or resolved with an error if request cannot be made/failed/timeout expired.
    */
 
-  static async fetchTranslationsBackup (lemmaList, outLang) {
-    // let languageCode = LanguageModelFactory.getLanguageCodeFromId(languageID)
-
-    console.log('********starting fetching translations')
-    let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter()
-
-    // let translationsList = await lemmaAdapter.getTranslations(lemma.languageCode, outLang, lemma.word)
-    let translationsList = await lemmaAdapter.getTranslationsList(lemmaList, outLang)
-
-    for (let lemma of lemmaList) {
-      let curTranslations = translationsList.find(function (element) { return element.in === lemma.word })
-      Translation.loadTranslations(lemma, curTranslations)
-    }
-    console.log('********finish fetching translations', translationsList)
+  static get defaultLang () {
+    return 'eng'
   }
 
-  static fetchTranslations (lemmaList, inLang, outLang) {
+  static defineOutLang(browserLang) {
+    let langMap = {
+      'en-US': 'eng'
+    }
+
+    return  langMap[browserLang]!this.defaultLang
+  }
+
+  static fetchTranslations (lemmaList, inLang, browserLang) {
+    
+    let outLang = this.defineOutLang(browserLang)
+
     return new Promise((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter()
