@@ -1277,27 +1277,17 @@ class Translation {
 
    */
   constructor (lemma, meanings = []) {
-    // if (!lemma) {
-    //   throw new Error('Lemma should not be empty.')
-    // }
+    if (!lemma) {
+      throw new Error('Lemma should not be empty.')
+    }
 
     this.lemma = lemma;
     this.meanings = meanings;
   }
 
   static loadTranslations (lemma, itemTranslations) {
-    // console.log('******** Translation class fetching translations', translationsList)
-
-    // let res = []
-    // translationsList.forEach(function (item) {
-    // console.log('translationsList item ', item)
-    lemma.addTranslation(new Translation(lemma, itemTranslations.translations));
-    // res.push(lemma)
-    // })
-
-    // console.log('******** Translation class fetching translations 2 ', res)
-
-    // return res
+    lemma.addTranslation(new Translation(lemma, itemTranslations.translations.join(', ')));
+    console.log('**********update lemma with translation', lemma.word, itemTranslations, itemTranslations.translations);
   }
 }
 
@@ -1311,33 +1301,33 @@ class LemmaTranslations {
    * a Definition object or resolved with an error if request cannot be made/failed/timeout expired.
    */
 
-  static async fetchTranslationsBackup (lemmaList, outLang) {
-    // let languageCode = LanguageModelFactory.getLanguageCodeFromId(languageID)
-
-    console.log('********starting fetching translations');
-    let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
-
-    // let translationsList = await lemmaAdapter.getTranslations(lemma.languageCode, outLang, lemma.word)
-    let translationsList = await lemmaAdapter.getTranslationsList(lemmaList, outLang);
-
-    for (let lemma of lemmaList) {
-      let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
-      Translation.loadTranslations(lemma, curTranslations);
-    }
-    console.log('********finish fetching translations', translationsList);
+  static get defaultLang () {
+    return 'eng'
   }
 
-  static fetchTranslations (lemmaList, inLang, outLang) {
+  static defineOutLang (browserLang) {
+    let langMap = {
+      'en-US': 'eng'
+    };
+
+    return langMap[browserLang] || this.defaultLang
+  }
+
+  static fetchTranslations (lemmaList, inLang, browserLang) {
+    let outLang = this.defineOutLang(browserLang);
+
+    console.log('**************fetchTranslations', inLang, outLang);
     return new Promise$1((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
+            console.log('********finish fetching translations1', translationsList);
             for (let lemma of lemmaList) {
               let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
               Translation.loadTranslations(lemma, curTranslations);
             }
-            console.log('********finish fetching translations', translationsList);
+            console.log('********finish fetching translations2', translationsList);
             resolve(translationsList);
           })
           .catch(error => {
