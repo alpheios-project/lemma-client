@@ -861,18 +861,18 @@ class LemmaTranslations {
   static fetchTranslations (lemmaList, inLang, browserLang) {
     let outLang = this.defineOutLang(browserLang);
 
-    console.log('**************fetchTranslations', inLang, outLang);
+    // console.log('**************fetchTranslations', inLang, outLang)
     return new Promise$1((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
-            console.log('********finish fetching translations1', translationsList);
+            // console.log('********finish fetching translations1', translationsList)
             for (let lemma of lemmaList) {
               let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
               Translation.loadTranslations(lemma, curTranslations);
             }
-            console.log('********finish fetching translations2', translationsList);
+            // console.log('********finish fetching translations2', translationsList)
             resolve(translationsList);
           })
           .catch(error => {
