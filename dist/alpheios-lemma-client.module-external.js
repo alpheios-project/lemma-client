@@ -1,3 +1,5 @@
+import { Translation } from 'alpheios-data-models';
+
 /**
  * Base Adapter Class for a Lemma Translation Service
  */
@@ -813,14 +815,13 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
   }
 }
 
-// import {LanguageModelFactory} from 'alpheios-data-models'
 class LemmaTranslations {
   static async fetchTranslations (inLang, outLang, text) {
     // let languageCode = LanguageModelFactory.getLanguageCodeFromId(languageID)
     let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
     let translationsList = await lemmaAdapter.getTranslations(inLang, outLang, text);
 
-    console.log('fetching translations', translationsList);
+    Translation.loadTranslations(translationsList);
   }
 }
 
