@@ -9,6 +9,6 @@ export default class LemmaTranslations {
     let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter()
     let translationsList = await lemmaAdapter.getTranslations(lemma.languageCode, outLang, lemma.word)
 
-    Translation.loadTranslations(translationsList)
+    Translation.loadTranslations(lemma, translationsList)
   }
 }
