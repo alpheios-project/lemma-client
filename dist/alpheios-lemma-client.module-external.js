@@ -817,6 +817,8 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
 class LemmaTranslations {
   static async fetchTranslations (lemma, outLang) {
     // let languageCode = LanguageModelFactory.getLanguageCodeFromId(languageID)
+
+    console.log('********starting fetching translations');
     let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
     let translationsList = await lemmaAdapter.getTranslations(lemma.languageCode, outLang, lemma.word);
 

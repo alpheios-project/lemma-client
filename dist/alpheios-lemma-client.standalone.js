@@ -1255,18 +1255,34 @@ class Translation {
 
    */
   constructor (lemma, meanings = []) {
-    if (!lemma) {
-      throw new Error('Lemma should not be empty.')
-    }
+    // if (!lemma) {
+    //   throw new Error('Lemma should not be empty.')
+    // }
 
     this.lemma = lemma;
     this.meanings = meanings;
+  }
+
+  static loadTranslations (translationsList) {
+    console.log('******** Translation class fetching translations', translationsList);
+
+    let res = [];
+    translationsList.forEach(function (item) {
+      console.log('translationsList item ', item);
+      res.push(new Translation(item.in, item.translations));
+    });
+
+    console.log('******** Translation class fetching translations 2 ', res);
+
+    return res
   }
 }
 
 class LemmaTranslations {
   static async fetchTranslations (lemma, outLang) {
     // let languageCode = LanguageModelFactory.getLanguageCodeFromId(languageID)
+
+    console.log('********starting fetching translations');
     let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
     let translationsList = await lemmaAdapter.getTranslations(lemma.languageCode, outLang, lemma.word);
 
