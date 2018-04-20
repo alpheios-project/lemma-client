@@ -1,4 +1,4 @@
-// import {LanguageModelFactory} from 'alpheios-data-models'
+import { Translation } from 'alpheios-data-models'
 import AlpheiosLemmaTranslationsAdapter from './alpheios/alpheios_adapter'
 
 export default class LemmaTranslations {
@@ -7,6 +7,6 @@ export default class LemmaTranslations {
     let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter()
     let translationsList = await lemmaAdapter.getTranslations(inLang, outLang, text)
 
-    console.log('fetching translations', translationsList)
+    Translation.loadTranslations(translationsList)
   }
 }
