@@ -62,6 +62,28 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
       return unparsed
     }
   }
+
+  async getTranslationsList (lemmaList, outLang) {
+    let adapter = this
+    let input = ''
+    let inLang = null
+
+    for (let lemma of lemmaList) {
+      if (!inLang) {
+        inLang = lemma.languageCode
+      }
+      input += lemma.word + ','
+    }
+
+    if (input.length > 0) {
+      input = input.substr(0, input.length - 1)
+
+      let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input
+      let unparsed = await adapter._loadJSON(urlTranslations)
+      return unparsed
+    }
+    return null
+  }
   /**
    * Loads a json data from a URL
    * @param {string} url - the url
@@ -69,7 +91,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
    */
   _loadJSON (url) {
     // TODO figure out best way to load this data
-    console.time('loadJSONTime')
+    console.time('loadJSONTimeLemma')
     return new Promise((resolve, reject) => {
       window.fetch(url, {
         method: 'GET',
@@ -84,7 +106,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
           function (json) {
           // let text = response.json()
             console.log('loadJson lemma-client response', json)
-            console.timeEnd('loadJSONTime')
+            console.timeEnd('loadJSONTimeLemma')
             resolve(json)
           }
         ).catch((error) => {

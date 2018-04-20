@@ -780,6 +780,28 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
       return unparsed
     }
   }
+
+  async getTranslationsList (lemmaList, outLang) {
+    let adapter = this;
+    let input = '';
+    let inLang = null;
+
+    for (let lemma of lemmaList) {
+      if (!inLang) {
+        inLang = lemma.languageCode;
+      }
+      input += lemma.word + ',';
+    }
+
+    if (input.length > 0) {
+      input = input.substr(0, input.length - 1);
+
+      let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input;
+      let unparsed = await adapter._loadJSON(urlTranslations);
+      return unparsed
+    }
+    return null
+  }
   /**
    * Loads a json data from a URL
    * @param {string} url - the url
@@ -787,7 +809,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
    */
   _loadJSON (url) {
     // TODO figure out best way to load this data
-    console.time('loadJSONTime');
+    console.time('loadJSONTimeLemma');
     return new Promise$1((resolve, reject) => {
       window.fetch(url, {
         method: 'GET',
@@ -802,7 +824,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
           function (json) {
           // let text = response.json()
             console.log('loadJson lemma-client response', json);
-            console.timeEnd('loadJSONTime');
+            console.timeEnd('loadJSONTimeLemma');
             resolve(json);
           }
         ).catch((error) => {
@@ -1264,12 +1286,13 @@ class Translation {
   }
 
   static loadTranslations (lemma, translationsList) {
-    console.log('******** Translation class fetching translations', translationsList);
+    // console.log('******** Translation class fetching translations', translationsList)
 
     let res = [];
     translationsList.forEach(function (item) {
-      console.log('translationsList item ', item);
-      res.push(new Translation(lemma, item.translations));
+      // console.log('translationsList item ', item)
+      lemma.addTranslation(new Translation(lemma, item.translations));
+      res.push(lemma);
     });
 
     console.log('******** Translation class fetching translations 2 ', res);
@@ -1279,14 +1302,20 @@ class Translation {
 }
 
 class LemmaTranslations {
-  static async fetchTranslations (lemma, outLang) {
+  static async fetchTranslations (lemmaList, outLang) {
     // let languageCode = LanguageModelFactory.getLanguageCodeFromId(languageID)
 
     console.log('********starting fetching translations');
     let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
-    let translationsList = await lemmaAdapter.getTranslations(lemma.languageCode, outLang, lemma.word);
 
-    Translation.loadTranslations(lemma, translationsList);
+    // let translationsList = await lemmaAdapter.getTranslations(lemma.languageCode, outLang, lemma.word)
+    let translationsList = await lemmaAdapter.getTranslationsList(lemmaList, outLang);
+
+    for (let lemma of lemmaList) {
+      let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
+      Translation.loadTranslationsFromList(lemma, [curTranslations]);
+    }
+    console.log('********finish fetching translations', translationsList);
   }
 }
 
