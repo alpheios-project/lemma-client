@@ -28,11 +28,11 @@ export default class LemmaTranslations {
     console.log('********finish fetching translations', translationsList)
   }
 
-  static fetchTranslations (lemmaList, outLang) {
+  static fetchTranslations (lemmaList, inLang, outLang) {
     return new Promise((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter()
-        lemmaAdapter.getTranslationsList(lemmaList, outLang)
+        lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
             for (let lemma of lemmaList) {
               let curTranslations = translationsList.find(function (element) { return element.in === lemma.word })

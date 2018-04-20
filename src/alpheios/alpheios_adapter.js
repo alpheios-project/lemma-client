@@ -63,15 +63,11 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
     }
   }
 
-  async getTranslationsList (lemmaList, outLang) {
+  async getTranslationsList (lemmaList, inLang, outLang) {
     let adapter = this
     let input = ''
-    let inLang = null
 
     for (let lemma of lemmaList) {
-      if (!inLang) {
-        inLang = lemma.languageCode
-      }
       input += lemma.word + ','
     }
 
