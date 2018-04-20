@@ -1289,19 +1289,19 @@ class Translation {
     this.meanings = meanings;
   }
 
-  static loadTranslations (lemma, translationsList) {
+  static loadTranslations (lemma, itemTranslations) {
     // console.log('******** Translation class fetching translations', translationsList)
 
-    let res = [];
-    translationsList.forEach(function (item) {
-      // console.log('translationsList item ', item)
-      lemma.addTranslation(new Translation(lemma, item.translations));
-      res.push(lemma);
-    });
+    // let res = []
+    // translationsList.forEach(function (item) {
+    // console.log('translationsList item ', item)
+    lemma.addTranslation(new Translation(lemma, itemTranslations.translations));
+    // res.push(lemma)
+    // })
 
-    console.log('******** Translation class fetching translations 2 ', res);
+    // console.log('******** Translation class fetching translations 2 ', res)
 
-    return res
+    // return res
   }
 }
 
@@ -1317,7 +1317,7 @@ class LemmaTranslations {
 
     for (let lemma of lemmaList) {
       let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
-      Translation.loadTranslations(lemma, [curTranslations]);
+      Translation.loadTranslations(lemma, curTranslations);
     }
     console.log('********finish fetching translations', translationsList);
   }
