@@ -787,6 +787,8 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
     let inLang = null;
 
     for (let lemma of lemmaList) {
+      console.log('defining inLang', inLang, lemma.languageCode, lemma);
+
       if (!inLang) {
         inLang = lemma.languageCode;
       }
