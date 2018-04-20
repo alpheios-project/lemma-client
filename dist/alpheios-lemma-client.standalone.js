@@ -787,15 +787,17 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
     let inLang = null;
 
     for (let lemma of lemmaList) {
-      console.log('defining inLang', inLang, lemma.languageCode, lemma);
-
       if (!inLang) {
         inLang = lemma.languageCode;
       }
       input += lemma.word + ',';
     }
 
-    if (input.length > 0) {
+    if (adapter.mapLangUri[inLang] === undefined) {
+      await adapter.getAvailableResLang(inLang);
+    }
+
+    if (input.length > 0 && adapter.mapLangUri[inLang] !== undefined && adapter.mapLangUri[inLang][outLang] !== undefined) {
       input = input.substr(0, input.length - 1);
 
       let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input;
