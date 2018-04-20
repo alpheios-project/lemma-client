@@ -1317,7 +1317,7 @@ class LemmaTranslations {
 
     for (let lemma of lemmaList) {
       let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
-      Translation.loadTranslationsFromList(lemma, [curTranslations]);
+      Translation.loadTranslations(lemma, [curTranslations]);
     }
     console.log('********finish fetching translations', translationsList);
   }
