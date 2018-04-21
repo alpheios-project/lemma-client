@@ -35,8 +35,8 @@ export default class LemmaTranslations {
           .then(function (translationsList) {
             // console.log('********finish fetching translations1', translationsList)
             for (let lemma of lemmaList) {
-              let curTranslations = translationsList.find(function (element) { return element.in === lemma.word })
-              Translation.loadTranslations(lemma, curTranslations)
+              // let curTranslations = translationsList.find(function (element) { return element.in === lemma.word })
+              Translation.loadTranslations(lemma, translationsList)
             }
             // console.log('********finish fetching translations2', translationsList)
             resolve(translationsList)

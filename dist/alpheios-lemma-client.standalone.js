@@ -1276,7 +1276,7 @@ class Translation {
    * @param [] meanings - A set of definitions.
 
    */
-  constructor (lemma, meanings = []) {
+  constructor (lemma, meanings = '') {
     if (!lemma) {
       throw new Error('Lemma should not be empty.')
     }
@@ -1285,9 +1285,16 @@ class Translation {
     this.meanings = meanings;
   }
 
-  static loadTranslations (lemma, itemTranslations) {
-    lemma.addTranslation(new Translation(lemma, itemTranslations.translations.join(', ')));
-    console.log('**********update lemma with translation', lemma.word, itemTranslations, itemTranslations.translations);
+  static readTranslationFromJSONList (lemma, translationsList) {
+    let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
+    return new Translation(lemma, curTranslations.translations.join(', '))
+  }
+
+  static loadTranslations (lemma, translationsList) {
+    lemma.addTranslation(this.readTranslationFromJSONList(lemma, translationsList));
+    // lemma.addTranslation(new Translation(lemma, itemTranslations.translations.join(', ')))
+
+    console.log('**********update lemma with translation', lemma.word, lemma.translation.meanings);
   }
 }
 
@@ -1324,8 +1331,8 @@ class LemmaTranslations {
           .then(function (translationsList) {
             // console.log('********finish fetching translations1', translationsList)
             for (let lemma of lemmaList) {
-              let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
-              Translation.loadTranslations(lemma, curTranslations);
+              // let curTranslations = translationsList.find(function (element) { return element.in === lemma.word })
+              Translation.loadTranslations(lemma, translationsList);
             }
             // console.log('********finish fetching translations2', translationsList)
             resolve(translationsList);
