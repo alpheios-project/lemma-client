@@ -62,7 +62,13 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
       return unparsed
     }
   }
-
+  /**
+   * Loads translationsList for an array of Lemmas from inLang to outLang
+   * @param {Lemma []} lemmaList - An array of lemmas for translation
+   * @param {string} inLang - source lang of the input
+   * @param {string} outLang - result lang for the input
+   * @returns {Promise} a Promise that resolves to the text contents of the loaded file
+   */
   async getTranslationsList (lemmaList, inLang, outLang) {
     let adapter = this
     let input = ''
