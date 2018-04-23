@@ -32,7 +32,11 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
     let adapter = this
 
     let urlAvaLangsRes = adapter.config.url + '/' + avaLangIntem + '/'
+    console.log('***** in getAvailableResLang', urlAvaLangsRes)
+
     let unparsed = await adapter._loadJSON(urlAvaLangsRes)
+
+    console.log('***** in getAvailableResLang unparsed', unparsed)
 
     let mapLangUri = {}
     unparsed.forEach(function (langItem) {
@@ -48,20 +52,20 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
    * @param {string} input - text for translation
    * @returns {Promise} a Promise that resolves to the text contents of the loaded file
    */
-  async getTranslations (inLang, outLang, input) {
-    let adapter = this
+  // async getTranslations (inLang, outLang, input) {
+  //   let adapter = this
 
-    if (adapter.mapLangUri[inLang] === undefined) {
-      await adapter.getAvailableResLang(inLang)
-    }
+  //   if (adapter.mapLangUri[inLang] === undefined) {
+  //     await adapter.getAvailableResLang(inLang)
+  //   }
 
-    if (adapter.mapLangUri[inLang] !== undefined && adapter.mapLangUri[inLang][outLang] !== undefined) {
-      let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input
+  //   if (adapter.mapLangUri[inLang] !== undefined && adapter.mapLangUri[inLang][outLang] !== undefined) {
+  //     let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input
 
-      let unparsed = await adapter._loadJSON(urlTranslations)
-      return unparsed
-    }
-  }
+  //     let unparsed = await adapter._loadJSON(urlTranslations)
+  //     return unparsed
+  //   }
+  // }
   /**
    * Loads translationsList for an array of Lemmas from inLang to outLang
    * @param {Lemma []} lemmaList - An array of lemmas for translation
@@ -97,21 +101,27 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
    */
   _loadJSON (url) {
     // TODO figure out best way to load this data
+    console.log('************************************************in load json')
     console.time('loadJSONTimeLemma')
+    url = 'http://localhost:8080/hello'
     return new Promise((resolve, reject) => {
       window.fetch(url, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }
       })
         .then(function (response) {
+          console.log('in load json then2', response.json())
+          console.log(typeof response)
+          console.log(response)
           return response.json()
         })
         .then(
           function (json) {
           // let text = response.json()
-            // console.log('loadJson lemma-client response', json)
+            console.log('in load json then2', json)
             console.timeEnd('loadJSONTimeLemma')
             resolve(json)
           }
@@ -120,5 +130,23 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
         })
     })
   }
+
+  /**
+   * Get a configuration setting for this lemma client instance
+   * @param {string} property
+   * @returns {string} the value of the property
+   */
+  getConfig (property) {
+    return this.config[property]
+  }
+
+  /**
+   * Get fisrt available lang from config for unit testing
+   * @returns {string} the value of the property
+   */
+  getInLangForTesting (property) {
+    return this.config.availableLangSource[0]
+  }
 }
+
 export default AlpheiosLemmaTranslationsAdapter
