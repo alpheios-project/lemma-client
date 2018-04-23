@@ -813,7 +813,7 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
     // TODO figure out best way to load this data
     console.log('************************************************in load json');
     console.time('loadJSONTimeLemma');
-    url = 'http://localhost:8080/hello';
+    // url = 'http://localhost:8080/hello'
     return new Promise$1((resolve, reject) => {
       window.fetch(url, {
         method: 'GET',
