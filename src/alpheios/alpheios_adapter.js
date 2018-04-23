@@ -78,8 +78,7 @@ class AlpheiosLemmaTranslationsAdapter {
       window.fetch(url, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          'Accept': 'application/json'
         }
       })
         .then(function (res) {
