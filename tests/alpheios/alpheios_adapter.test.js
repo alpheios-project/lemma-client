@@ -1,20 +1,23 @@
 /* eslint-env jest */
 'use strict'
 import AlpheiosLemmaTranslationsAdapter from '../../src/alpheios/alpheios_adapter.js'
-// let lsj = 'https://github.com/alpheios-project/lsj'
 
 describe('AlpheiosLemmaTranslationsAdapter object', () => {
   beforeAll(() => {
     jest.resetModules()
-    window.fetch = require('jest-fetch-mock')
   })
 
-  test('config.json has url attribute', () => {
+  test('init adapter with default config', () => {
+    let adapter = new AlpheiosLemmaTranslationsAdapter()
+    expect(adapter.config).not.toBe(undefined)
+  })
+
+  test('init adapter with default config - has url attribute', () => {
     let adapter = new AlpheiosLemmaTranslationsAdapter()
     expect(adapter.getConfig('url')).toBeTruthy()
   })
 
-  test('config.json has availableLangSource attribute', () => {
+  test('init adapter with default config - has availableLangSource attribute', () => {
     let adapter = new AlpheiosLemmaTranslationsAdapter()
     expect(adapter.getConfig('availableLangSource')).toBeTruthy()
   })
@@ -25,19 +28,97 @@ describe('AlpheiosLemmaTranslationsAdapter object', () => {
     expect(adapter.getConfig('availableLangSource').length).toBeGreaterThan(0)
   })
 
-  test('getAvailableResLang is getting a list of available langs', async () => {
-    expect.assertions(1)
+  test('init adapter with default confige', () => {
+    let adapter = new AlpheiosLemmaTranslationsAdapter()
+    expect(adapter.config).not.toBe(undefined)
+  })
+
+  test('use custom config in constructor of adapter (check on getting available langs)', (done) => {
+    let customConfig = {
+      'url': 'http://localhost:5000',
+      'availableLangSource': ['lat']
+    }
+
+    let adapter = new AlpheiosLemmaTranslationsAdapter(customConfig)
+    let avaLangIntem = adapter.getInLangForTesting()
+
+    adapter.getAvailableResLang(avaLangIntem)
+      .then(() => {
+        expect(adapter.mapLangUri[avaLangIntem]).not.toBe(undefined)
+        done()
+      })
+  })
+
+  test('getAvailableResLang is getting a list of available langs', (done) => {
+    let adapter = new AlpheiosLemmaTranslationsAdapter()
+    let avaLangIntem = adapter.getInLangForTesting()
+
+    adapter.getAvailableResLang(avaLangIntem)
+      .then(() => {
+        expect(adapter.mapLangUri[avaLangIntem]).not.toBe(undefined)
+        done()
+      })
+  })
+
+  test('getTranslationsList is getting a list of available alngs and then gets translations for lemma list for eng', (done) => {
+    let mockLemma = {
+      word: 'mare',
+      language: 'lat',
+      principalParts: []
+    }
+    let lemmaList = [mockLemma]
 
     let adapter = new AlpheiosLemmaTranslationsAdapter()
-    console.log('**********************************************')
     let avaLangIntem = adapter.getInLangForTesting()
-    console.log(avaLangIntem)
-    // window.fetch.mockResponse(JSON.stringify({ access_token: '12345' }))
 
-    let response = await adapter.getAvailableResLang(avaLangIntem)
-    console.log('**********************************************')
-    console.log(adapter.mapLangUri[avaLangIntem], response)
-    console.log('**********************************************')
-    expect(adapter.mapLangUri[avaLangIntem]).not.toBe(undefined)
+    adapter.getTranslationsList(lemmaList, avaLangIntem, 'eng')
+      .then((result) => {
+        console.log('***************************result', result)
+        expect(adapter.mapLangUri[avaLangIntem]).not.toBe(undefined)
+        expect(Array.isArray(result)).toBeTruthy()
+        expect(Array.isArray(result[0].translations)).toBeTruthy()
+        done()
+      })
+  })
+
+  test('getTranslationsList is getting not empty translations lat->eng for mare', (done) => {
+    let mockLemma = {
+      word: 'mare',
+      language: 'lat',
+      principalParts: []
+    }
+    let lemmaList = [mockLemma]
+
+    let adapter = new AlpheiosLemmaTranslationsAdapter()
+    let avaLangIntem = adapter.getInLangForTesting()
+
+    adapter.mapLangUri['lat'] = []
+    adapter.mapLangUri['lat']['eng'] = 'http://localhost:5000/lat/eng'
+
+    adapter.getTranslationsList(lemmaList, avaLangIntem, 'eng')
+      .then((result) => {
+        expect(result[0].translations.length).toBeGreaterThan(0)
+        done()
+      })
+  })
+
+  test('getTranslationsList if lemma.word is empty - no request', (done) => {
+    let mockLemma1 = {
+      word: '',
+      language: 'lat',
+      principalParts: []
+    }
+    let lemmaList1 = [mockLemma1]
+    let adapter = new AlpheiosLemmaTranslationsAdapter()
+    let avaLangIntem = adapter.getInLangForTesting()
+
+    adapter.mapLangUri['lat'] = []
+    adapter.mapLangUri['lat']['eng'] = 'http://localhost:5000/lat/eng'
+
+    adapter.getTranslationsList(lemmaList1, avaLangIntem, 'eng')
+      .then((result) => {
+        expect(result).toBe(null)
+        done()
+      })
   })
 })

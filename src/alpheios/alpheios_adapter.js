@@ -1,17 +1,14 @@
-import BaseLemmaTranslationsAdapter from '../base_adapter.js'
 import DefaultConfig from './config.json'
 import Promise from 'promise-polyfill'
 import 'whatwg-fetch'
 
-class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
+class AlpheiosLemmaTranslationsAdapter {
   /**
    * A Client Adapter for the Alpheios V1 Lemma service
    * @constructor
    * @param {Object} config - JSON configuration object override
    */
   constructor (config = null) {
-    super()
-
     if (config == null) {
       try {
         let fullconfig = JSON.parse(DefaultConfig)
@@ -32,11 +29,8 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
     let adapter = this
 
     let urlAvaLangsRes = adapter.config.url + '/' + avaLangIntem + '/'
-    console.log('***** in getAvailableResLang', urlAvaLangsRes)
 
     let unparsed = await adapter._loadJSON(urlAvaLangsRes)
-
-    console.log('***** in getAvailableResLang unparsed', unparsed)
 
     let mapLangUri = {}
     unparsed.forEach(function (langItem) {
@@ -45,27 +39,6 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
 
     adapter.mapLangUri[avaLangIntem] = mapLangUri
   }
-  /**
-   * Loads translations for input from inLang to outLang
-   * @param {string} inLang - source lang of the input
-   * @param {string} outLang - result lang for the input
-   * @param {string} input - text for translation
-   * @returns {Promise} a Promise that resolves to the text contents of the loaded file
-   */
-  // async getTranslations (inLang, outLang, input) {
-  //   let adapter = this
-
-  //   if (adapter.mapLangUri[inLang] === undefined) {
-  //     await adapter.getAvailableResLang(inLang)
-  //   }
-
-  //   if (adapter.mapLangUri[inLang] !== undefined && adapter.mapLangUri[inLang][outLang] !== undefined) {
-  //     let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input
-
-  //     let unparsed = await adapter._loadJSON(urlTranslations)
-  //     return unparsed
-  //   }
-  // }
   /**
    * Loads translationsList for an array of Lemmas from inLang to outLang
    * @param {Lemma []} lemmaList - An array of lemmas for translation
@@ -80,14 +53,15 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
     for (let lemma of lemmaList) {
       input += lemma.word + ','
     }
+    if (input.length > 0) {
+      input = input.substr(0, input.length - 1)
+    }
 
     if (adapter.mapLangUri[inLang] === undefined) {
       await adapter.getAvailableResLang(inLang)
     }
 
     if (input.length > 0 && adapter.mapLangUri[inLang] !== undefined && adapter.mapLangUri[inLang][outLang] !== undefined) {
-      input = input.substr(0, input.length - 1)
-
       let urlTranslations = adapter.mapLangUri[inLang][outLang] + '?input=' + input
       let unparsed = await adapter._loadJSON(urlTranslations)
       return unparsed
@@ -100,10 +74,6 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
    * @returns {Promise} a Promise that resolves to the text contents of the loaded file
    */
   _loadJSON (url) {
-    // TODO figure out best way to load this data
-    console.log('************************************************in load json')
-    console.time('loadJSONTimeLemma')
-    // url = 'http://localhost:8080/hello'
     return new Promise((resolve, reject) => {
       window.fetch(url, {
         method: 'GET',
@@ -112,17 +82,11 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         }
       })
-        .then(function (response) {
-          console.log('in load json then2', response.json())
-          console.log(typeof response)
-          console.log(response)
-          return response.json()
+        .then(function (res) {
+          return res.json()
         })
         .then(
           function (json) {
-          // let text = response.json()
-            console.log('in load json then2', json)
-            console.timeEnd('loadJSONTimeLemma')
             resolve(json)
           }
         ).catch((error) => {
@@ -130,7 +94,6 @@ class AlpheiosLemmaTranslationsAdapter extends BaseLemmaTranslationsAdapter {
         })
     })
   }
-
   /**
    * Get a configuration setting for this lemma client instance
    * @param {string} property
