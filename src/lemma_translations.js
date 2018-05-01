@@ -29,7 +29,7 @@ export default class LemmaTranslations {
   static fetchTranslations (lemmaList, inLang, browserLang) {
     let outLang = this.defineOutLang(browserLang)
 
-    console.log('***************************in fetchTranslations')
+    console.log('***************************in fetchTranslations', outLang)
     return new Promise((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter()
