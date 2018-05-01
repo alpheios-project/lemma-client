@@ -12,9 +12,6 @@ export default class LemmaTranslations {
       'en-US': 'eng',
       'ita': 'ita'
     }
-    console.log('*************defineOutLang 1', browserLang)
-    console.log('*************defineOutLang 2', langMap[browserLang])
-    console.log('*************defineOutLang 3', langMap[browserLang] || this.defaultLang)
     return langMap[browserLang] || this.defaultLang
   }
 
@@ -28,8 +25,6 @@ export default class LemmaTranslations {
 
   static fetchTranslations (lemmaList, inLang, browserLang) {
     let outLang = this.defineOutLang(browserLang)
-
-    console.log('***************************in fetchTranslations', outLang)
     return new Promise((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter()
