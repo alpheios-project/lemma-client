@@ -825,7 +825,12 @@ class LemmaTranslations {
   static defineOutLang (browserLang) {
     let langMap = {
       'en-US': 'eng',
-      'ita': 'ita'
+      'it': 'ita',
+      'pt': 'por',
+      'ca': 'cat',
+      'fr': 'fre',
+      'de': 'ger',
+      'es': 'spa'
     };
     return langMap[browserLang] || this.defaultLang
   }
