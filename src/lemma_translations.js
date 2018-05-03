@@ -1,6 +1,6 @@
 import { Translation } from 'alpheios-data-models'
 import AlpheiosLemmaTranslationsAdapter from './alpheios/alpheios_adapter'
-import Promise from 'promise-polyfill'
+// import Promise from 'promise-polyfill'
 
 export default class LemmaTranslations {
   static get defaultLang () {
