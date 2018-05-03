@@ -1312,7 +1312,7 @@ class LemmaTranslations {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
-            console.log('*****************************in Promise getTranslationsList', translationsList);
+            console.log('*****************************in Promise getTranslationsList', Translation);
             for (let lemma of lemmaList) {
               Translation.loadTranslations(lemma, outLang, translationsList);
             }
