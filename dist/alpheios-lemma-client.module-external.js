@@ -845,6 +845,8 @@ class LemmaTranslations {
 
   static fetchTranslations (lemmaList, inLang, browserLang) {
     let outLang = this.defineOutLang(browserLang);
+    console.log('****************fetchTranslations', Translation);
+
     return new Promise$1((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
