@@ -1,35 +1,40 @@
 {
   "name": "alpheios-lemma-client",
-  "version": "1.15.12",
+  "version": "1.16.0",
   "description": "Alpheios Lemma Client Library",
-  "main": "dist/alpheios-lemma-client.standalone.js",
-  "moduleExternal": "dist/alpheios-lemma-client.module-external.js",
+  "main": "dist/alpheios-lemma-client.min.js",
   "scripts": {
     "test": "standard --fix && jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "build": "standard --fix && node ./rollup.build.js",
+    "build": "standard --fix && node --experimental-modules ./node_modules/alpheios-node-build/dist/build.mjs all all lib",
+    "build-prod": "standard --fix && node --experimental-modules ./node_modules/alpheios-node-build/dist/build.mjs all production lib",
+    "build-dev": "standard --fix && node --experimental-modules ./node_modules/alpheios-node-build/dist/build.mjs all development lib",
     "lint": "standard --fix"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "alpheios-data-models": "git://github.com/alpheios-project/data-models.git#lemma-client",
+    "alpheios-node-build": "git://github.com/alpheios-project/node-build",
+    "alpheios-data-models": "git://github.com/alpheios-project/data-models#node-build",
     "babel-jest": "^21.2.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babyparse": "^0.4.6",
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.1",
     "flush-promises": "^1.0.0",
     "jest": "^21.2.1",
     "jest-environment-jsdom-11.0.0": "^20.1.9",
     "jest-fetch-mock": "1.3.3",
-    "papaparse": "^4.3.7",
-    "rollup": "^0.47.6",
-    "rollup-plugin-commonjs": "^8.4.1",
-    "rollup-plugin-node-resolve": "^3.2.0",
-    "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-string": "^2.0.2",
+    "papaparse": "^4.4.0",
+    "source-map-loader": "^0.2.3",
     "standard": "^11.0.0",
     "whatwg-fetch": "^2.0.4"
+  },
+  "peerDependencies": {
+    "alpheios-data-models": "github:alpheios-project/data-models"
+  },
+  "engines": {
+    "node": ">= 9.10.1",
+    "npm": ">= 5.6.0"
   },
   "jest": {
     "verbose": true,
