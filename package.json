@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.15",
     "alpheios-data-models": "git://github.com/alpheios-project/data-models.git#master",
     "babel-jest": "^21.2.0",
     "babel-preset-env": "^1.6.1",
@@ -44,6 +45,7 @@
     ]
   },
   "dependencies": {
-    "promise-polyfill": "7.1.2"
+    "promise-polyfill": "7.1.2",
+    "vue-test-utils": "^1.0.0-beta.11"
   }
 }
