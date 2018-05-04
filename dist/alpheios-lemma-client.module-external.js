@@ -824,9 +824,14 @@ class LemmaTranslations {
 
   static defineOutLang (browserLang) {
     let langMap = {
-      'en-US': 'eng'
+      'en-US': 'eng',
+      'it': 'ita',
+      'pt': 'por',
+      'ca': 'cat',
+      'fr': 'fre',
+      'de': 'ger',
+      'es': 'spa'
     };
-
     return langMap[browserLang] || this.defaultLang
   }
 
@@ -840,14 +845,11 @@ class LemmaTranslations {
 
   static fetchTranslations (lemmaList, inLang, browserLang) {
     let outLang = this.defineOutLang(browserLang);
-
-    console.log('***************************in fetchTranslations');
     return new Promise$1((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
-            console.log('*****************************in Promise getTranslationsList', translationsList);
             for (let lemma of lemmaList) {
               Translation.loadTranslations(lemma, outLang, translationsList);
             }

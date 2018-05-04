@@ -1257,25 +1257,25 @@ class Translation {
    * @param [] meanings - A set of definitions.
 
    */
-  constructor (lemma, meanings = '') {
+  constructor (lemma, languageCode, translations = []) {
     if (!lemma) {
       throw new Error('Lemma should not be empty.')
     }
-
-    this.lemma = lemma;
-    this.meanings = meanings;
+    this.lemmaWord = lemma.word;
+    this.languageCode = languageCode;
+    this.glosses = translations;
   }
 
-  static readTranslationFromJSONList (lemma, translationsList) {
+  static readTranslationFromJSONList (lemma, languageCode, translationsList) {
+    if (!translationsList || !Array.isArray(translationsList)) {
+      throw new Error('Recieved not proper translation list', translationsList)
+    }
     let curTranslations = translationsList.find(function (element) { return element.in === lemma.word });
-    return new Translation(lemma, curTranslations.translations.join(', '))
+    return new Translation(lemma, languageCode, curTranslations.translations)
   }
 
-  static loadTranslations (lemma, translationsList) {
-    lemma.addTranslation(this.readTranslationFromJSONList(lemma, translationsList));
-    // lemma.addTranslation(new Translation(lemma, itemTranslations.translations.join(', ')))
-
-    console.log('**********update lemma with translation', lemma.word, lemma.translation.meanings);
+  static loadTranslations (lemma, languageCode, translationsList) {
+    lemma.addTranslation(this.readTranslationFromJSONList(lemma, languageCode, translationsList));
   }
 }
 
@@ -1286,9 +1286,14 @@ class LemmaTranslations {
 
   static defineOutLang (browserLang) {
     let langMap = {
-      'en-US': 'eng'
+      'en-US': 'eng',
+      'it': 'ita',
+      'pt': 'por',
+      'ca': 'cat',
+      'fr': 'fre',
+      'de': 'ger',
+      'es': 'spa'
     };
-
     return langMap[browserLang] || this.defaultLang
   }
 
@@ -1302,14 +1307,11 @@ class LemmaTranslations {
 
   static fetchTranslations (lemmaList, inLang, browserLang) {
     let outLang = this.defineOutLang(browserLang);
-
-    console.log('***************************in fetchTranslations');
     return new Promise$1((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter();
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
-            console.log('*****************************in Promise getTranslationsList', translationsList);
             for (let lemma of lemmaList) {
               Translation.loadTranslations(lemma, outLang, translationsList);
             }
