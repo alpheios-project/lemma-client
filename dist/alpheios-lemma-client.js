@@ -1504,9 +1504,14 @@ class LemmaTranslations {
 
   static defineOutLang (browserLang) {
     let langMap = {
-      'en-US': 'eng'
+      'en-US': 'eng',
+      'it': 'ita',
+      'pt': 'por',
+      'ca': 'cat',
+      'fr': 'fre',
+      'de': 'ger',
+      'es': 'spa'
     }
-
     return langMap[browserLang] || this.defaultLang
   }
 
@@ -1520,14 +1525,11 @@ class LemmaTranslations {
 
   static fetchTranslations (lemmaList, inLang, browserLang) {
     let outLang = this.defineOutLang(browserLang)
-
-    console.log('***************************in fetchTranslations')
     return new promise_polyfill__WEBPACK_IMPORTED_MODULE_2___default.a((resolve, reject) => {
       try {
         let lemmaAdapter = new _alpheios_alpheios_adapter__WEBPACK_IMPORTED_MODULE_1__["default"]()
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
-            console.log('*****************************in Promise getTranslationsList', translationsList)
             for (let lemma of lemmaList) {
               alpheios_data_models__WEBPACK_IMPORTED_MODULE_0__["Translation"].loadTranslations(lemma, outLang, translationsList)
             }

@@ -4,6 +4,7 @@ import AlpheiosLemmaTranslationsAdapter from '../../src/alpheios/alpheios_adapte
 
 describe('AlpheiosLemmaTranslationsAdapter object', () => {
   beforeAll(() => {
+    // window.fetch = jest.fn().mockImplementation(() => Promise.resolve('{"ok": true, "Id": 123}'))
     jest.resetModules()
   })
 
@@ -40,6 +41,7 @@ describe('AlpheiosLemmaTranslationsAdapter object', () => {
     }
 
     let adapter = new AlpheiosLemmaTranslationsAdapter(customConfig)
+
     let avaLangIntem = adapter.getInLangForTesting()
 
     adapter.getAvailableResLang(avaLangIntem)
@@ -73,7 +75,7 @@ describe('AlpheiosLemmaTranslationsAdapter object', () => {
 
     adapter.getTranslationsList(lemmaList, avaLangIntem, 'eng')
       .then((result) => {
-        console.log('***************************result', result)
+        // console.log('***************************result', result)
         expect(adapter.mapLangUri[avaLangIntem]).not.toBe(undefined)
         expect(Array.isArray(result)).toBeTruthy()
         expect(Array.isArray(result[0].translations)).toBeTruthy()
