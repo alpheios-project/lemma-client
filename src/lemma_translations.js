@@ -10,7 +10,10 @@ export default class LemmaTranslations {
   static defineOutLang (browserLang) {
     let langMap = {
       'en-US': 'eng',
-      'fr': 'fre'
+      'fre': 'fre',
+      'por': 'por',
+      'cat': 'cat',
+      'eng': 'eng'
     }
 
     return langMap[browserLang] || this.defaultLang
@@ -27,13 +30,11 @@ export default class LemmaTranslations {
   static fetchTranslations (lemmaList, inLang, browserLang) {
     let outLang = this.defineOutLang(browserLang)
 
-    console.log('***************************in fetchTranslations')
     return new Promise((resolve, reject) => {
       try {
         let lemmaAdapter = new AlpheiosLemmaTranslationsAdapter()
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
-            console.log('*****************************in Promise getTranslationsList', translationsList)
             for (let lemma of lemmaList) {
               Translation.loadTranslations(lemma, outLang, translationsList)
             }
