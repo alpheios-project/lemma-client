@@ -23,8 +23,15 @@ const defaultPlugins = [
 // Standalone bundle
 rollup.rollup({
   entry: 'src/driver.js',
+  external: ['alpheios-data-models'],
   moduleName: 'ApheiosLemmaClient',
-  plugins: defaultPlugins
+  plugins: defaultPlugins,
+  onwarn: function (warning) {
+    if (warning.code === 'THIS_IS_UNDEFINED') {
+      return
+    }
+    console.error(warning.message)
+  }
 }).then(bundle => {
   bundle.write({
     format: 'es',

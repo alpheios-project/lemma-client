@@ -9,7 +9,8 @@ export default class LemmaTranslations {
 
   static defineOutLang (browserLang) {
     let langMap = {
-      'en-US': 'eng'
+      'en-US': 'eng',
+      'fr': 'fre'
     }
 
     return langMap[browserLang] || this.defaultLang
