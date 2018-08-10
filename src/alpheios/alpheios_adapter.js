@@ -1,4 +1,4 @@
-import DefaultConfig from './atsconfig.json'
+import DefaultConfig from './config.json'
 import Promise from 'promise-polyfill'
 import 'whatwg-fetch'
 
