@@ -2,6 +2,8 @@ import DefaultConfig from './config.json'
 import Promise from 'promise-polyfill'
 import 'whatwg-fetch'
 
+import axios from 'axios'
+
 class AlpheiosLemmaTranslationsAdapter {
   /**
    * A Client Adapter for the Alpheios V1 Lemma service
@@ -68,12 +70,8 @@ class AlpheiosLemmaTranslationsAdapter {
     }
     return null
   }
-  /**
-   * Loads a json data from a URL
-   * @param {string} url - the url
-   * @returns {Promise} a Promise that resolves to the text contents of the loaded file
-   */
-  _loadJSON (url) {
+
+  fetchWindow (url) {
     return new Promise((resolve, reject) => {
       window.fetch(url, {
         method: 'GET',
@@ -92,6 +90,27 @@ class AlpheiosLemmaTranslationsAdapter {
           reject(error)
         })
     })
+  }
+
+  async fetchAxios (url) {
+    try {
+      let res = await axios.get(encodeURI(url))
+      return res.data
+    } catch (err) {
+      console.info('Error occured with translations', err.message)
+    }
+  }
+  /**
+   * Loads a json data from a URL
+   * @param {string} url - the url
+   * @returns {Promise} a Promise that resolves to the text contents of the loaded file
+   */
+  _loadJSON (url) {
+    if (typeof window !== 'undefined') {
+      return this.fetchWindow(url)
+    } else {
+      return this.fetchAxios(url)
+    }
   }
   /**
    * Get a configuration setting for this lemma client instance

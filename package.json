@@ -14,7 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.15",
-    "alpheios-data-models": "git://github.com/alpheios-project/data-models.git",
+    "alpheios-data-models": "git://github.com/alpheios-project/data-models.git#for-cmdtools",
     "alpheios-node-build": "git://github.com/alpheios-project/node-build.git",
     "babel-jest": "^21.2.0",
     "babel-preset-env": "^1.7.0",
@@ -28,7 +28,8 @@
     "papaparse": "^4.6.0",
     "source-map-loader": "^0.2.3",
     "standard": "^11.0.0",
-    "whatwg-fetch": "^2.0.4"
+    "whatwg-fetch": "^2.0.4",
+    "axios": "*"
   },
   "peerDependencies": {
     "alpheios-data-models": "github:alpheios-project/data-models"
