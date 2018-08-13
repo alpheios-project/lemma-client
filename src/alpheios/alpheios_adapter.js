@@ -97,7 +97,7 @@ class AlpheiosLemmaTranslationsAdapter {
       let res = await axios.get(encodeURI(url))
       return res.data
     } catch (err) {
-      console.info('Error occured with translations', err.message)
+      // console.info('Error occured with translations', err.message)
     }
   }
   /**
