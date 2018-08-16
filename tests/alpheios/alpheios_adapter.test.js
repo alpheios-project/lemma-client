@@ -36,7 +36,7 @@ describe('AlpheiosLemmaTranslationsAdapter object', () => {
 
   test('use custom config in constructor of adapter (check on getting available langs)', (done) => {
     let customConfig = {
-      'url': 'http://localhost:5000',
+      'url': 'https://ats.alpheios.net',
       'availableLangSource': ['lat']
     }
 
@@ -95,7 +95,7 @@ describe('AlpheiosLemmaTranslationsAdapter object', () => {
     let avaLangIntem = adapter.getInLangForTesting()
 
     adapter.mapLangUri['lat'] = []
-    adapter.mapLangUri['lat']['eng'] = 'http://localhost:5000/lat/eng'
+    adapter.mapLangUri['lat']['eng'] = 'https://ats.alpheios.net/lat/eng'
 
     adapter.getTranslationsList(lemmaList, avaLangIntem, 'eng')
       .then((result) => {
