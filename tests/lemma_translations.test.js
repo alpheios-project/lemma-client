@@ -1,7 +1,7 @@
 /* eslint-env jest */
 'use strict'
 import LemmaTranslations from '../src/lemma_translations.js'
-import {Lemma, Translation, ResourceProvider} from 'alpheios-data-models'
+import {Lemma, Translation} from 'alpheios-data-models'
 
 describe('Lexicons', () => {
   beforeAll(() => {
@@ -25,17 +25,6 @@ describe('Lexicons', () => {
       .then((result) => {
         expect(mockLemma.translation).not.toBe(undefined)
         expect(mockLemma.translation instanceof Translation).not.toBe(undefined)
-        done()
-      })
-  })
-  test('fetchTranslations - for lat => eng - lemma translation has provider property', (done) => {
-    let mockLemma = new Lemma('mare', 'lat')
-
-    LemmaTranslations.fetchTranslations([mockLemma], 'lat', 'eng')
-      .then((result) => {
-        expect(mockLemma.translation).not.toBe(undefined)
-        expect(mockLemma.translation instanceof Translation).not.toBe(undefined)
-        expect(mockLemma.translation.provider instanceof ResourceProvider).not.toBe(undefined)
         done()
       })
   })
