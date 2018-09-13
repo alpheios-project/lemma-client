@@ -123,4 +123,11 @@ describe('AlpheiosLemmaTranslationsAdapter object', () => {
         done()
       })
   })
+
+  test('provider is defined', () => {
+    let adapter = new AlpheiosLemmaTranslationsAdapter()
+    expect(adapter.provider).toBeTruthy()
+    expect(adapter.provider.uri).toBeTruthy()
+    expect(adapter.provider.rights).toBeTruthy()
+  })
 })

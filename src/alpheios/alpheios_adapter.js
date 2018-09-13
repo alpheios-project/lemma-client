@@ -1,4 +1,5 @@
 import DefaultConfig from './config.json'
+import { ResourceProvider } from 'alpheios-data-models'
 import Promise from 'promise-polyfill'
 import 'whatwg-fetch'
 
@@ -22,6 +23,7 @@ class AlpheiosLemmaTranslationsAdapter {
       this.config = config
     }
     this.mapLangUri = {}
+    this.provider = new ResourceProvider(this.config.url, this.config.rights)
   }
   /**
    * Loads a available res languages for available lang array from the config
