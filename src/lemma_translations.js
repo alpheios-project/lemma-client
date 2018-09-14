@@ -36,7 +36,7 @@ export default class LemmaTranslations {
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
             for (let lemma of lemmaList) {
-              Translation.loadTranslations(lemma, outLang, translationsList)
+              Translation.loadTranslations(lemma, outLang, translationsList, lemmaAdapter.provider)
             }
             resolve(translationsList)
           })

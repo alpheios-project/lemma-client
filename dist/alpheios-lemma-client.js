@@ -3038,12 +3038,15 @@ module.exports = g;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _config_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config.json */ "./alpheios/config.json");
 var _config_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./config.json */ "./alpheios/config.json", 1);
-/* harmony import */ var promise_polyfill__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! promise-polyfill */ "../node_modules/promise-polyfill/lib/index.js");
-/* harmony import */ var promise_polyfill__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(promise_polyfill__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var whatwg_fetch__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! whatwg-fetch */ "../node_modules/whatwg-fetch/fetch.js");
-/* harmony import */ var whatwg_fetch__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(whatwg_fetch__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var alpheios_data_models__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alpheios-data-models */ "alpheios-data-models");
+/* harmony import */ var alpheios_data_models__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(alpheios_data_models__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var promise_polyfill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! promise-polyfill */ "../node_modules/promise-polyfill/lib/index.js");
+/* harmony import */ var promise_polyfill__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(promise_polyfill__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var whatwg_fetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! whatwg-fetch */ "../node_modules/whatwg-fetch/fetch.js");
+/* harmony import */ var whatwg_fetch__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(whatwg_fetch__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "../node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 
@@ -3068,6 +3071,7 @@ class AlpheiosLemmaTranslationsAdapter {
       this.config = config
     }
     this.mapLangUri = {}
+    this.provider = new alpheios_data_models__WEBPACK_IMPORTED_MODULE_1__["ResourceProvider"](this.config.url, this.config.rights)
   }
   /**
    * Loads a available res languages for available lang array from the config
@@ -3118,7 +3122,7 @@ class AlpheiosLemmaTranslationsAdapter {
   }
 
   fetchWindow (url) {
-    return new promise_polyfill__WEBPACK_IMPORTED_MODULE_1___default.a((resolve, reject) => {
+    return new promise_polyfill__WEBPACK_IMPORTED_MODULE_2___default.a((resolve, reject) => {
       window.fetch(url, {
         method: 'GET',
         headers: {
@@ -3140,7 +3144,7 @@ class AlpheiosLemmaTranslationsAdapter {
 
   async fetchAxios (url) {
     try {
-      let res = await axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(encodeURI(url))
+      let res = await axios__WEBPACK_IMPORTED_MODULE_4___default.a.get(encodeURI(url))
       return res.data
     } catch (err) {
       // console.info('Error occured with translations', err.message)
@@ -3185,10 +3189,10 @@ class AlpheiosLemmaTranslationsAdapter {
 /*!******************************!*\
   !*** ./alpheios/config.json ***!
   \******************************/
-/*! exports provided: url, availableLangSource, default */
+/*! exports provided: url, availableLangSource, rights, default */
 /***/ (function(module) {
 
-module.exports = {"url":"https://ats.alpheios.net","availableLangSource":["lat"]};
+module.exports = {"url":"https://ats.alpheios.net","availableLangSource":["lat"],"rights":"Lemma translations are extracted from data provided under the GNU GPL v3 license by the Collatinus Project (https://github.com/biblissima/collatinus), which developed and maintained by Yves Ouvrard and Philippe Verkerk."};
 
 /***/ }),
 
@@ -3267,7 +3271,7 @@ class LemmaTranslations {
         lemmaAdapter.getTranslationsList(lemmaList, inLang, outLang)
           .then(function (translationsList) {
             for (let lemma of lemmaList) {
-              alpheios_data_models__WEBPACK_IMPORTED_MODULE_0__["Translation"].loadTranslations(lemma, outLang, translationsList)
+              alpheios_data_models__WEBPACK_IMPORTED_MODULE_0__["Translation"].loadTranslations(lemma, outLang, translationsList, lemmaAdapter.provider)
             }
             resolve(translationsList)
           })
