@@ -4141,7 +4141,7 @@ class AlpheiosLemmaTranslationsAdapter {
 /*! exports provided: url, availableLangSource, rights, default */
 /***/ (function(module) {
 
-module.exports = {"url":"https://ats.alpheios.net","availableLangSource":["lat"],"rights":"Lemma translations are extracted from data provided under the GNU GPL v3 license by the Collatinus Project (https://github.com/biblissima/collatinus), which developed and maintained by Yves Ouvrard and Philippe Verkerk."};
+module.exports = {"url":"https://ats.alpheios.net","availableLangSource":["lat"],"rights":"Lemma translations are extracted from data provided under the GNU GPL v3 license by the Collatinus Project (https://github.com/biblissima/collatinus), which is developed and maintained by Yves Ouvrard and Philippe Verkerk."};
 
 /***/ }),
 
