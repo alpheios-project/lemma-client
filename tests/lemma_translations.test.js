@@ -1,7 +1,7 @@
 /* eslint-env jest */
 'use strict'
 import LemmaTranslations from '../src/lemma_translations.js'
-import {Lemma, Translation} from 'alpheios-data-models'
+import { Lemma, Translation } from 'alpheios-data-models'
 
 describe('Lexicons', () => {
   beforeAll(() => {
